@@ -1,4 +1,4 @@
-package com.example.finals
+package com.example.attendancetracker
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,10 +12,6 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.attendancetracker.R
-import com.example.attendancetracker.ui.theme.NukeSSLCerts
-import com.example.attendancetracker.ui.theme.RegisterActivity
-import com.example.attendancetracker.ui.theme.WelcomeActivity
 
 class MainActivity : ComponentActivity() {
     lateinit var emailInput: EditText
@@ -36,7 +32,7 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this@MainActivity, "Logging-in.", Toast.LENGTH_SHORT).show()
 
             val queue = Volley.newRequestQueue(this.applicationContext)
-            val url = "http://192.168.254.113/PHP/myit0079db/login.php" // Replace with the URL of your login API endpoint
+            val url = "https://192.168.100.3/PHP/myit0079db/login.php" // Replace with the URL of your login API endpoint
 
             val sharedPref = getSharedPreferences("auth-user", MODE_PRIVATE)
             val editor = sharedPref.edit()
