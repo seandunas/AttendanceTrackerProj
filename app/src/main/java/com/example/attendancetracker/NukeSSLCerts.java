@@ -1,4 +1,4 @@
-package com.example.attendancetracker.ui.theme;
+package com.example.attendancetracker;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;

@@ -1,4 +1,4 @@
-package com.example.attendancetracker.ui.theme
+package com.example.attendancetracker
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,6 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.attendancetracker.R
-import com.example.finals.MainActivity
 
 class RegisterActivity : ComponentActivity() {
     private lateinit var emailInput: EditText
@@ -34,7 +32,7 @@ class RegisterActivity : ComponentActivity() {
     }
 
     private fun performRegistration(email: String, password: String) {
-        val url = "http://192.168.254.113/PHP/myit0079db/register.php" // Replace with the appropriate URL
+        val url = "http://192.168.100.3/PHP/myit0079db/register.php" // Replace with the appropriate URL
 
         val stringRequest = object : StringRequest(
             Request.Method.POST, url,

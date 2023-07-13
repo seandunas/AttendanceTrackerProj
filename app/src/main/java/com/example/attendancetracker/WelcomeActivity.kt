@@ -1,4 +1,4 @@
-package com.example.attendancetracker.ui.theme
+package com.example.attendancetracker
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import com.example.attendancetracker.R
-import com.example.finals.MainActivity
 
 class WelcomeActivity : ComponentActivity() {
     lateinit var authuservalue: TextView
