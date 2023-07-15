@@ -50,8 +50,7 @@ class MainActivity : ComponentActivity() {
                         // Login successful
                         Toast.makeText(this@MainActivity, "Login successful", Toast.LENGTH_SHORT).show()
                         // Proceed to the next activity after successful login
-                        val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
-                        startActivity(intent)
+
                     } else {
                         // Login failed
                         Toast.makeText(this@MainActivity, "Invalid email or password", Toast.LENGTH_SHORT).show()
@@ -69,7 +68,8 @@ class MainActivity : ComponentActivity() {
                     return params
                 }
             }
-
+            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+            startActivity(intent)
             NukeSSLCerts.nuke()
             queue.add(stringRequest)
         }

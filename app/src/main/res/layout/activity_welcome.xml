@@ -19,11 +19,28 @@
         android:textColor="@android:color/holo_orange_dark"
         android:minHeight="48dp" />
 
+    <FrameLayout
+        android:id="@+id/qrScannerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+
+        <SurfaceView
+            android:id="@+id/cameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="69dp" />
+
+    </FrameLayout>
+
+    <WebView
+    android:id="@+id/webView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
     <Button
         android:id="@+id/logoutBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="25dp"
 
         android:text="Logout" />
 
