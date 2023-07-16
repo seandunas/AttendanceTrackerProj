@@ -12,6 +12,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     lateinit var emailInput: EditText
@@ -25,9 +26,8 @@ class MainActivity : ComponentActivity() {
 
         emailInput = findViewById(R.id.etemail)
         passwordInput= findViewById(R.id.etpassword)
-
-        val btn_logme_in = findViewById<Button>(R.id.loginBtn)
         // set on-click listener
+        val btn_logme_in = findViewById<Button>(R.id.loginBtn)
         btn_logme_in.setOnClickListener {
             Toast.makeText(this@MainActivity, "Logging-in.", Toast.LENGTH_SHORT).show()
 
@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
             editor.apply {
                 putString("auth-user", emailInput.text.toString())
                 apply()
-                commit()
             }
 
             val stringRequest = object : StringRequest(
@@ -48,9 +47,13 @@ class MainActivity : ComponentActivity() {
                 Response.Listener { response ->
                     if (response.trim() == "success") {
                         // Login successful
-                        Toast.makeText(this@MainActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                        // Proceed to the next activity after successful login
 
+                        Log.d("STRING LOGIN SUCCESSFUL",response)
+                        val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(this@MainActivity, "Login successful", Toast.LENGTH_SHORT).show()
+
+                        // Proceed to the next activity after successful login
                     } else {
                         // Login failed
                         Toast.makeText(this@MainActivity, "Invalid email or password", Toast.LENGTH_SHORT).show()
@@ -65,11 +68,11 @@ class MainActivity : ComponentActivity() {
                     val params = HashMap<String, String>()
                     params["email"] = findViewById<EditText>(R.id.etemail).text.toString()
                     params["password"] = findViewById<EditText>(R.id.etpassword).text.toString()
+                    params["email"]?.let { it1 -> Log.d("PARAMS VALUE", it1) }
                     return params
                 }
             }
-            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
-            startActivity(intent)
+
             NukeSSLCerts.nuke()
             queue.add(stringRequest)
         }
@@ -79,6 +82,5 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(this@MainActivity, RegisterActivity::class.java)
             startActivity(intent)
         }
-
     }
 }

@@ -57,7 +57,6 @@ class RegisterActivity : ComponentActivity() {
                 return params
             }
         }
-
         val queue = Volley.newRequestQueue(this)
         queue.add(stringRequest)
     }

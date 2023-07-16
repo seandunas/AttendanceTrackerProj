@@ -1,4 +1,5 @@
 package com.example.attendancetracker
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -6,26 +7,21 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
-//import com.google.zxing.BarcodeFormat
-//import com.google.zxing.Result
-//import com.google.zxing.common.HybridBinarizer
-//import com.google.zxing.qrcode.QRCodeReader
-////import com.google.zxing.integration.android.IntentIntegrator //scanner
+import com.google.zxing.integration.android.IntentIntegrator //scanner
 import android.content.pm.ActivityInfo //scanner
 import android.webkit.WebView //webview
-import androidx.camera.core.ImageCapture
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.common.InputImage
-import java.nio.ByteBuffer
+import android.widget.Toast
+import android.util.Log
 
 class WelcomeActivity: Activity() {
-    lateinit var authuservalue: TextView
-    lateinit var logoutBtn: Button
+    private lateinit var authuservalue: TextView
+    private lateinit var logoutBtn: Button
     private lateinit var webView: WebView //webview
+    private var userName: String? = null
 
-    @SuppressLint("SuspiciousIndentation", "MissingInflatedId", "SetTextI18n")
+    @SuppressLint("SuspiciousIndentation", "MissingInflatedId", "SetTextI18n",
+        "SourceLockedOrientationActivity"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
@@ -36,42 +32,22 @@ class WelcomeActivity: Activity() {
         logoutBtn = findViewById(R.id.logoutBtn)
 
         val sharedPref = getSharedPreferences("auth-user", MODE_PRIVATE)
-        val userName = sharedPref.getString("auth-user", null)
+        userName = sharedPref.getString("auth-user", null)
         authuservalue.text = "Welcome \n$userName"
 
         val qrScannerBtn = findViewById<FrameLayout>(R.id.qrScannerContainer) //scanner
         qrScannerBtn.setOnClickListener {
-            val options = BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(
-                    Barcode.FORMAT_QR_CODE,
-                    Barcode.FORMAT_AZTEC).enableAllPotentialBarcodes()
-                .build()
-
-            val scanner = BarcodeScanning.getClient()
-            val imageCapture = ImageCapture.Builder()
-            val image = InputImage.fromByteBuffer(
-                ByteBuffer.allocate(20),
-                /* image width */ 480,
-                /* image height */ 360,
-                0,
-                InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
-            )
-            val result = scanner.process(image)
-                .addOnSuccessListener { barcodes ->
-                    print("Success: ${barcodes.size}")
-                }
-                .addOnFailureListener {
-                    print("FAIL")
-                }
             // Initialize the QR scanner
-//            val integrator = IntentIntegrator(this@WelcomeActivity)
-//            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-//            integrator.setPrompt("Scan QR code")
-//            integrator.setCameraId(0) // Use the rear camera
-//            integrator.setBeepEnabled(false)
-//            integrator.initiateScan()
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            val integrator = IntentIntegrator(this@WelcomeActivity)
+            integrator.setOrientationLocked(true)
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+            integrator.setPrompt("Scan QR code")
+            integrator.setCameraId(0) // Use the rear camera
+            integrator.setBeepEnabled(false)
+            integrator.initiateScan()
 
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            Log.d("TAG", "message")
         }
 
         logoutBtn.setOnClickListener {
@@ -86,21 +62,24 @@ class WelcomeActivity: Activity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //webview
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //web-view
         super.onActivityResult(requestCode, resultCode, data)
 
-//        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-//        if (result != null) {
-//            if (result.contents != null) {
-//                // QR code was successfully scanned
-//                val scannedData = result.contents
-//
-//                // Load the URL into the WebView
-//                webView.loadUrl(scannedData)
-//            } else {
-//                // QR code scanning was canceled or failed
-//                // Handle the error or show a message to the user
-//            }
-//        }
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents != null) {
+                // QR code was successfully scanned
+                val scannedData = result.contents
+                // Load the URL into the WebView
+                Log.d("WEBVIEW LOADED THIS: ", result.contents)
+
+                if(result.contents.equals("https://me-qr.com/A4FFbgrv")){
+                    webView.loadUrl("https://192.168.100.3/PHP/myit0079db/attendance.php/?email=anjo@gmail.com&userId=1")
+                }
+            } else {
+                // QR code scanning was canceled or failed
+                // Handle the error or show a message to the user
+            }
+        }
     }
 }
